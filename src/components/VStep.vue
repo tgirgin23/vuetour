@@ -1,5 +1,5 @@
 <template>
-  <div class="v-step" :id="'v-step-' + hash" :ref="'v-step-' + hash">
+  <div class="v-step" :class="{'v-step__center': params.placement}" :id="'v-step-' + hash" :ref="'v-step-' + hash">
     <slot name="header">
       <div v-if="step.header" class="v-step__header">
         <div v-if="step.header.title" v-html="step.header.title"></div>
@@ -106,13 +106,14 @@ export default {
       if (this.targetElement) {
         this.enableScrolling()
         this.createHighlight()
-
-        /* eslint-disable no-new */
-        createPopper(
-          this.targetElement,
-          this.$refs['v-step-' + this.hash],
-          this.params
-        )
+        // use popper only if we need to place the element anywhere but centered
+        if (this.params.placement !== 'center') {
+          createPopper(
+            this.targetElement,
+            this.$refs['v-step-' + this.hash],
+            this.params
+          )
+        }
       } else {
         if (this.debug) {
           console.error('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.hash + '"] does not exist!')
@@ -202,6 +203,14 @@ export default {
     padding: 1rem;
     text-align: center;
     z-index: 10000;
+
+    &__center {
+      width: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   .v-step .v-step__arrow {

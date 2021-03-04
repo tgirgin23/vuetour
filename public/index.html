@@ -15,6 +15,35 @@
 
   <body>
     <div id="app">
+      <v-tour name="myTour" :steps="steps" :callbacks="callbacks" :options="{ highlight: true }">
+        <template slot-scope="tour">
+          <transition name="fade">
+            <v-step
+                    v-if="tour.currentStep === index"
+                    v-for="(step, index) of tour.steps"
+                    :key="index"
+                    :step="step"
+                    :previous-step="tour.previousStep"
+                    :next-step="tour.nextStep"
+                    :stop="tour.stop"
+                    :is-first="tour.isFirst"
+                    :is-last="tour.isLast"
+                    :labels="tour.labels"
+                    :highlight="tour.highlight"
+            >
+              <template v-if="tour.currentStep === 2">
+                <div slot="actions">
+                  <button @click="tour.previousStep" class="btn btn-primary mr-2">Previous step</button>
+                  <button @click="tour.nextStep" class="btn btn-primary">Next step</button>
+                </div>
+              </template>
+            </v-step>
+          </transition>
+        </template>
+      </v-tour>
+
+      <div id="#v-step-centered"></div>
+
       <div class="section section-hero bg-gray">
         <div id="overview" class="grid-hero container grid-lg text-center">
           <div class="docs-brand">
@@ -90,39 +119,10 @@
               </p>
             </div>
             <div class="column col-10 col-sm-12 col-mx-auto">
-              <!--<my-tour></my-tour>-->
-
               <div>
                 <button @click="$tours['myTour'].start()" class="btn btn-lg mr-2">Start the tour</button>
                 <button @click="nextStep" class="btn btn-lg mr-2">Next step</button>
                 <button @click="showLastStep" class="btn btn-lg">Show last step</button>
-
-                <v-tour name="myTour" :steps="steps" :callbacks="callbacks" :options="{ highlight: true }">
-                  <template slot-scope="tour">
-                    <transition name="fade">
-                      <v-step
-                        v-if="tour.currentStep === index"
-                        v-for="(step, index) of tour.steps"
-                        :key="index"
-                        :step="step"
-                        :previous-step="tour.previousStep"
-                        :next-step="tour.nextStep"
-                        :stop="tour.stop"
-                        :is-first="tour.isFirst"
-                        :is-last="tour.isLast"
-                        :labels="tour.labels"
-                        :highlight="tour.highlight"
-                      >
-                        <template v-if="tour.currentStep === 2">
-                          <div slot="actions">
-                            <button @click="tour.previousStep" class="btn btn-primary mr-2">Previous step</button>
-                            <button @click="tour.nextStep" class="btn btn-primary">Next step</button>
-                          </div>
-                        </template>
-                      </v-step>
-                    </transition>
-                  </template>
-                </v-tour>
               </div>
 
             </div>
@@ -213,6 +213,13 @@
             content: 'Try it, you\'ll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.',
             params: {
               placement: 'top'
+            }
+          },
+          {
+            target: '#v-step-centered',
+            content: 'You can even center your divs!',
+            params: {
+              placement: 'center'
             }
           },
           {
