@@ -1,5 +1,5 @@
 <template>
-  <div class="v-step" :class="{'v-step__center': params.placement}" :id="'v-step-' + hash" :ref="'v-step-' + hash">
+  <div class="v-step" :class="{'v-step__center': stepParams.placement}" :id="'v-step-' + hash" :ref="'v-step-' + hash">
     <slot name="header">
       <div v-if="step.header" class="v-step__header">
         <div v-if="step.header.title" v-html="step.header.title"></div>
@@ -30,13 +30,17 @@
 import { createPopper } from '@popperjs/core'
 import jump from 'jump.js'
 import { customAlphabet } from 'nanoid'
-import { DEFAULT_STEP_OPTIONS, HIGHLIGHT } from '@/shared/constants'
+import { HIGHLIGHT } from '@/shared/constants'
 
 export default {
   name: 'v-step',
   props: {
     step: {
       type: Object
+    },
+    stepParams: {
+      type: Object,
+      required: true
     },
     previousStep: {
       type: Function
@@ -83,18 +87,7 @@ export default {
   },
   data () {
     return {
-      hash: customAlphabet('1234567890abcdef', 8)(),
-      targetElement: document.querySelector(this.step.target)
-    }
-  },
-  computed: {
-    params () {
-      return {
-        ...DEFAULT_STEP_OPTIONS,
-        ...{ highlight: this.highlight }, // Use global tour highlight setting first
-        ...{ enabledButtons: Object.assign({}, this.enabledButtons) },
-        ...this.step.params // Then use local step parameters if defined
-      }
+      hash: customAlphabet('1234567890abcdef', 8)()
     }
   },
   methods: {
@@ -107,12 +100,16 @@ export default {
         this.enableScrolling()
         this.createHighlight()
         // use popper only if we need to place the element anywhere but centered
-        if (this.params.placement !== 'center') {
+        if (this.stepParams.placement !== 'center') {
           createPopper(
             this.targetElement,
             this.$refs['v-step-' + this.hash],
-            this.params
+            this.stepParams
           )
+        }
+
+        if (this.stepParams.mask) {
+          this.$emit('show-mask', true)
         }
       } else {
         if (this.debug) {
@@ -125,7 +122,7 @@ export default {
       }
     },
     enableScrolling () {
-      if (this.params.enableScrolling) {
+      if (this.stepParams.enableScrolling) {
         if (this.step.duration || this.step.offset) {
           let jumpOptions = {
             duration: this.step.duration || 1000,
@@ -143,9 +140,9 @@ export default {
     },
     isHighlightEnabled () {
       if (this.debug) {
-        console.log(`[Vue Tour] Highlight is ${this.params.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.hash}"]`)
+        console.log(`[Vue Tour] Highlight is ${this.stepParams.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.hash}"]`)
       }
-      return this.params.highlight
+      return this.stepParams.highlight
     },
     createHighlight () {
       if (this.isHighlightEnabled()) {
@@ -181,7 +178,7 @@ export default {
       }
     },
     isButtonEnabled (name) {
-      return this.params.enabledButtons.hasOwnProperty(name) ? this.params.enabledButtons[name] : true
+      return this.stepParams.enabledButtons.hasOwnProperty(name) ? this.stepParams.enabledButtons[name] : true
     }
   },
   mounted () {

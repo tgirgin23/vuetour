@@ -1,8 +1,19 @@
 <template>
   <div class="v-tour">
-    <slot
-      :current-step="currentStep"
-      :steps="steps"
+    <v-mask
+      v-if="backgroundMask"
+      :windowHeight="this.mask.windowHeight"
+      :windowWidth="this.mask.windowWidth"
+      :targetWidth="500"
+      :targetHeight="50"
+      :targetLeft="50"
+      :targetTop="500"
+    ></v-mask>
+    <v-step
+      v-if="steps[currentStep]"
+      :stepParams="stepParams"
+      :step="steps[currentStep]"
+      :key="currentStep"
       :previous-step="previousStep"
       :next-step="nextStep"
       :stop="stop"
@@ -13,37 +24,23 @@
       :labels="customOptions.labels"
       :enabled-buttons="customOptions.enabledButtons"
       :highlight="customOptions.highlight"
+      :stop-on-fail="customOptions.stopOnTargetNotFound"
       :debug="customOptions.debug"
+      :targetElement="targetElement"
+      @targetNotFound="$emit('targetNotFound', $event)"
+      @show-mask="showMask"
     >
-      <!--Default slot {{ currentStep }}-->
-      <v-step
-        v-if="steps[currentStep]"
-        :step="steps[currentStep]"
-        :key="currentStep"
-        :previous-step="previousStep"
-        :next-step="nextStep"
-        :stop="stop"
-        :skip="skip"
-        :finish="finish"
-        :is-first="isFirst"
-        :is-last="isLast"
-        :labels="customOptions.labels"
-        :enabled-buttons="customOptions.enabledButtons"
-        :highlight="customOptions.highlight"
-        :stop-on-fail="customOptions.stopOnTargetNotFound"
-        :debug="customOptions.debug"
-        @targetNotFound="$emit('targetNotFound', $event)"
-      >
-      </v-step>
-    </slot>
+    </v-step>
   </div>
 </template>
 
 <script>
-import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, KEYS } from '../shared/constants'
+import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, DEFAULT_STEP_OPTIONS, KEYS } from '@/shared/constants'
+import VMask from '@/components/VMask'
 
 export default {
   name: 'v-tour',
+  components: { VMask },
   props: {
     steps: {
       type: Array,
@@ -61,23 +58,37 @@ export default {
       default: () => { return DEFAULT_CALLBACKS }
     }
   },
-  data () {
-    return {
-      currentStep: -1
-    }
-  },
+  data: () => ({
+    currentStep: -1,
+    backgroundMask: false,
+    mask: {
+      windowHeight: 0,
+      windowWidth: 0,
+      targetHeight: 0,
+      targetWidth: 0,
+      targetTop: 0,
+      targetLeft: 0
+    },
+    targetElement: document.querySelector(this.step.target)
+  }),
   mounted () {
     this.$tours[this.name] = this
 
     if (this.customOptions.useKeyboardNavigation) {
       window.addEventListener('keyup', this.handleKeyup)
     }
+
+    this.windowWidth = window.innerWidth
+    this.windowHeight = document.body.scrollHeight
+    window.addEventListener('resize', this.handleWindowResize)
   },
   beforeDestroy () {
     // Remove the keyup listener if it has been defined
     if (this.customOptions.useKeyboardNavigation) {
       window.removeEventListener('keyup', this.handleKeyup)
     }
+
+    window.removeEventListener('resize', this.handleWindowResize)
   },
   computed: {
     // Allow us to define custom options and merge them with the default options.
@@ -86,6 +97,14 @@ export default {
       return {
         ...DEFAULT_OPTIONS,
         ...this.options
+      }
+    },
+    stepParams () {
+      return {
+        ...DEFAULT_STEP_OPTIONS,
+        ...{ highlight: this.highlight }, // Use global tour highlight setting first
+        ...{ enabledButtons: Object.assign({}, this.enabledButtons) },
+        ...this.step.params // Then use local step parameters if defined
       }
     },
     customCallbacks () {
@@ -195,10 +214,9 @@ export default {
       this.customCallbacks.onFinish()
       this.stop()
     },
-
     handleKeyup (e) {
       if (this.customOptions.debug) {
-        console.log('[Vue Tour] A keyup event occured:', e)
+        console.log('[Vue Tour] A keyup event occurred: ', e)
       }
       switch (e.keyCode) {
         case KEYS.ARROW_RIGHT:
@@ -215,6 +233,18 @@ export default {
     isKeyEnabled (key) {
       const { enabledNavigationKeys } = this.customOptions
       return enabledNavigationKeys.hasOwnProperty(key) ? enabledNavigationKeys[key] : true
+    },
+    handleWindowResize () {
+      this.windowWidth = window.innerWidth
+    },
+    showMask (value) {
+      this.backgroundMask = value
+    }
+  },
+  watch: {
+    step () {
+      this.targetElement.getBoundingClientRect()
+        .this.showMask(this.stepParams.mask)
     }
   }
 }
@@ -227,15 +257,23 @@ export default {
 
   .v-tour {
     pointer-events: auto;
-  }
 
-  .v-tour__target--highlighted {
-    box-shadow: 0 0 0 4px rgba(0,0,0,.4);
-    pointer-events: auto;
-    z-index: 9999;
-  }
+    &__mask {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 25%);
+    }
 
-  .v-tour__target--relative {
-    position: relative;
+    &__target {
+      &--highlighted {
+        box-shadow: 0 0 0 4px rgba(0,0,0,.4);
+        pointer-events: auto;
+        z-index: 9999;
+      }
+      &--relative {
+        position: relative;
+      }
+    }
   }
 </style>
