@@ -34,9 +34,6 @@
         :debug="customOptions.debug"
         @targetNotFound="$emit('targetNotFound', $event)"
       >
-        <!--<div v-if="index === 2" slot="actions">
-          <a @click="nextStep">Next step</a>
-        </div>-->
       </v-step>
     </slot>
   </div>
