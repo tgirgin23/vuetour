@@ -1,5 +1,5 @@
 {
-  "name": "vue-tour",
+  "name": "vuetour",
   "version": "1.5.0",
   "description": "Vue Tour is a lightweight, simple and customizable tour plugin for use with Vue.js. It provides a quick and easy way to guide your users through your application.",
   "author": "Timur Girgin",
@@ -10,8 +10,8 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
-  "main": "dist/vue-tour.common.js",
-  "module": "dist/vue-tour.umd.js",
+  "main": "dist/vuetour.common.js",
+  "module": "dist/vuetour.umd.js",
   "dependencies": {
     "@popperjs/core": "^2.9.0",
     "jump.js": "^1.0.2",
@@ -35,7 +35,7 @@
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10"
   },
-  "homepage": "https://pulsardev.github.io/vue-tour",
+  "homepage": "",
   "keywords": [
     "vue",
     "tour"
@@ -43,7 +43,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tgirgin23/vue-tour2.git"
+    "url": "https://github.com/tgirgin23/vuetour.git"
   },
   "typings": "types/index.d.ts"
 }
