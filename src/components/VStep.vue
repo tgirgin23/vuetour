@@ -85,7 +85,7 @@ export default {
       type: Boolean
     },
     targetElement: {
-      type: HTMLAnchorElement
+      type: [HTMLAnchorElement, HTMLDivElement]
     }
   },
   data () {
@@ -230,7 +230,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="top"] {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="top"] .v-step__arrow {
@@ -245,7 +245,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="bottom"] {
-    margin-top: 0.5rem;
+    margin-top: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="bottom"] .v-step__arrow {
@@ -260,7 +260,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="right"] {
-    margin-left: 0.5rem;
+    margin-left: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="right"] .v-step__arrow {
@@ -275,7 +275,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="left"] {
-    margin-right: 0.5rem;
+    margin-right: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="left"] .v-step__arrow {

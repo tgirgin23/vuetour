@@ -1,3 +1,8 @@
+<!--
+  Copyright for portions of vuetour are held by Lionel T., 2021 as part of project reactour.
+  All other copyright for vuetour are held by Timur Girgin, 2021.
+-->
+
 <template>
   <svg
     :width="windowWidth"
@@ -188,7 +193,7 @@ export default {
 
 <style scoped lang="scss">
 .v-tour__mask {
-  position: fixed;
+  position: absolute;
   opacity: 0.65;
   z-index: 200;
 }

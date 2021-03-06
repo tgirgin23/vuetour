@@ -268,13 +268,6 @@ export default {
   .v-tour {
     pointer-events: auto;
 
-    &__mask {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 25%);
-    }
-
     &__target {
       &--highlighted {
         box-shadow: 0 0 0 4px rgba(0,0,0,.4);
