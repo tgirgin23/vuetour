@@ -80,8 +80,8 @@ export default {
       window.addEventListener('keyup', this.handleKeyup)
     }
 
-    this.windowWidth = window.innerWidth
-    this.windowHeight = document.body.scrollHeight
+    this.mask.windowWidth = window.innerWidth
+    this.mask.windowHeight = document.body.scrollHeight
 
     window.addEventListener('resize', this.handleWindowResize)
   },
@@ -238,7 +238,7 @@ export default {
       return enabledNavigationKeys.hasOwnProperty(key) ? enabledNavigationKeys[key] : true
     },
     handleWindowResize () {
-      this.windowWidth = window.innerWidth
+      this.mask.windowWidth = window.innerWidth
     },
     showMask (value) {
       this.backgroundMask = value
