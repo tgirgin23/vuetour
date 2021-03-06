@@ -4,10 +4,10 @@
       v-if="backgroundMask"
       :windowHeight="this.mask.windowHeight"
       :windowWidth="this.mask.windowWidth"
-      :targetWidth="500"
-      :targetHeight="50"
-      :targetLeft="50"
-      :targetTop="500"
+      :targetWidth="this.mask.targetWidth"
+      :targetHeight="this.mask.targetHeight"
+      :targetLeft="this.mask.targetLeft"
+      :targetTop="this.mask.targetTop"
     ></v-mask>
     <v-step
       v-if="steps[currentStep]"
@@ -58,19 +58,21 @@ export default {
       default: () => { return DEFAULT_CALLBACKS }
     }
   },
-  data: () => ({
-    currentStep: -1,
-    backgroundMask: false,
-    mask: {
-      windowHeight: 0,
-      windowWidth: 0,
-      targetHeight: 0,
-      targetWidth: 0,
-      targetTop: 0,
-      targetLeft: 0
-    },
-    targetElement: document.querySelector(this.step.target)
-  }),
+  data () {
+    return {
+      currentStep: -1,
+      backgroundMask: false,
+      mask: {
+        windowHeight: 0,
+        windowWidth: 0,
+        targetHeight: 0,
+        targetWidth: 0,
+        targetTop: 0,
+        targetLeft: 0
+      },
+      targetElement: null
+    }
+  },
   mounted () {
     this.$tours[this.name] = this
 
@@ -80,6 +82,7 @@ export default {
 
     this.windowWidth = window.innerWidth
     this.windowHeight = document.body.scrollHeight
+
     window.addEventListener('resize', this.handleWindowResize)
   },
   beforeDestroy () {
@@ -136,7 +139,7 @@ export default {
       startStep = typeof startStep !== 'undefined' ? parseInt(startStep, 10) : 0
       let step = this.steps[startStep]
 
-      let process = () => new Promise((resolve, reject) => {
+      let process = () => new Promise((resolve) => {
         setTimeout(() => {
           this.customCallbacks.onStart()
           this.currentStep = startStep
@@ -158,7 +161,7 @@ export default {
     async previousStep () {
       let futureStep = this.currentStep - 1
 
-      let process = () => new Promise((resolve, reject) => {
+      let process = () => new Promise((resolve) => {
         this.customCallbacks.onPreviousStep(this.currentStep)
         this.currentStep = futureStep
         resolve()
@@ -181,7 +184,7 @@ export default {
     async nextStep () {
       let futureStep = this.currentStep + 1
 
-      let process = () => new Promise((resolve, reject) => {
+      let process = () => new Promise((resolve) => {
         this.customCallbacks.onNextStep(this.currentStep)
         this.currentStep = futureStep
         resolve()
@@ -243,8 +246,15 @@ export default {
   },
   watch: {
     step () {
-      this.targetElement.getBoundingClientRect()
-        .this.showMask(this.stepParams.mask)
+      this.targetElement = document.querySelector(this.step.target)
+      const { left, top, height, width } = this.targetElement.getBoundingClientRect()
+      this.mask = Object.assign({}, this.mask, {
+        targetHeight: height,
+        targetWidth: width,
+        targetLeft: left,
+        targetTop: top
+      })
+      this.showMask(this.stepParams.mask)
     }
   }
 }

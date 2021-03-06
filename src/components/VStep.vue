@@ -83,6 +83,9 @@ export default {
     },
     debug: {
       type: Boolean
+    },
+    targetElement: {
+      type: HTMLAnchorElement
     }
   },
   data () {
