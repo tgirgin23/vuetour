@@ -10,7 +10,10 @@
       :targetTop="this.mask.targetTop"
     ></v-mask>
     <v-step
+      :id="'v-step-' + stepHash"
+      :ref="'v-step-' + stepHash"
       v-if="steps[currentStep]"
+      :stepHash="stepHash"
       :stepParams="stepParams"
       :step="steps[currentStep]"
       :key="currentStep"
@@ -37,6 +40,7 @@
 <script>
 import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, DEFAULT_STEP_OPTIONS, KEYS } from '@/shared/constants'
 import VMask from '@/components/VMask'
+import { customAlphabet } from 'nanoid'
 
 export default {
   name: 'v-tour',
@@ -70,12 +74,12 @@ export default {
         targetTop: 0,
         targetLeft: 0
       },
-      targetElement: null
+      targetElement: null,
+      stepHash: null
     }
   },
   mounted () {
     this.$tours[this.name] = this
-
     if (this.customOptions.useKeyboardNavigation) {
       window.addEventListener('keyup', this.handleKeyup)
     }
@@ -205,6 +209,7 @@ export default {
       return Promise.resolve()
     },
     stop () {
+      this.showMask(false)
       this.customCallbacks.onStop()
       document.body.classList.remove('v-tour--active')
       this.currentStep = -1
@@ -240,21 +245,34 @@ export default {
     handleWindowResize () {
       this.mask.windowWidth = window.innerWidth
     },
-    showMask (value) {
-      this.backgroundMask = value
+    showMask (show) {
+      document.documentElement.style.overflow = show ? 'hidden' : 'none'
+      this.backgroundMask = show
     }
   },
   watch: {
     step () {
-      this.targetElement = document.querySelector(this.step.target)
-      const { left, top, height, width } = this.targetElement.getBoundingClientRect()
-      this.mask = Object.assign({}, this.mask, {
-        targetHeight: height,
-        targetWidth: width,
-        targetLeft: left,
-        targetTop: top
-      })
-      this.showMask(this.stepParams.mask)
+      this.stepHash = customAlphabet('1234567890abcdef', 8)()
+      this.targetElement = document.querySelector(this.step?.target)
+      // If we have a target element we create a mask around it
+      if (this.targetElement) {
+        const { left, top, height, width } = this.targetElement?.getBoundingClientRect()
+        this.mask = Object.assign({}, this.mask, {
+          targetHeight: height,
+          targetWidth: width,
+          targetLeft: left,
+          targetTop: top
+        })
+        this.showMask(this.stepParams.mask)
+      } else if (this.step?.params?.mask) {
+        this.mask = Object.assign({}, this.mask, {
+          targetHeight: 0,
+          targetWidth: 0,
+          targetLeft: 0,
+          targetTop: 0
+        })
+        this.showMask(this.stepParams.mask)
+      }
     }
   }
 }

@@ -1,15 +1,15 @@
 <template>
-  <div class="v-step" :class="{'v-step__center': stepParams.placement}" :id="'v-step-' + hash" :ref="'v-step-' + hash">
+  <div class="v-step" :class="{'v-step__center': stepParams.placement}">
     <slot name="header">
       <div v-if="step.header" class="v-step__header">
-        <div v-if="step.header.title" v-html="step.header.title"></div>
+        {{ step.header }}
       </div>
     </slot>
 
     <slot name="content">
       <div class="v-step__content">
         <div v-if="step.content" v-html="step.content"></div>
-        <div v-else>This is a demo step! The id of this step is {{ hash }} and it targets {{ step.target }}.</div>
+        <div v-else>This is a demo step! The id of this step is {{ stepHash }} and it targets {{ step.target }}.</div>
       </div>
     </slot>
 
@@ -22,14 +22,13 @@
       </div>
     </slot>
 
-    <div class="v-step__arrow" :class="{ 'v-step__arrow--dark': step.header && step.header.title }"></div>
+    <div class="v-step__arrow" :class="{ 'v-step__arrow--dark': step.header }"></div>
   </div>
 </template>
 
 <script>
 import { createPopper } from '@popperjs/core'
 import jump from 'jump.js'
-import { customAlphabet } from 'nanoid'
 import { HIGHLIGHT } from '@/shared/constants'
 
 export default {
@@ -86,17 +85,16 @@ export default {
     },
     targetElement: {
       type: [HTMLAnchorElement, HTMLDivElement]
-    }
-  },
-  data () {
-    return {
-      hash: customAlphabet('1234567890abcdef', 8)()
+    },
+    stepHash: {
+      type: String,
+      required: true
     }
   },
   methods: {
     createStep () {
       if (this.debug) {
-        console.log('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.hash + '"] is:', this.targetElement)
+        console.log('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.stepHash + '"] is:', this.targetElement)
       }
 
       if (this.targetElement) {
@@ -116,7 +114,7 @@ export default {
         }
       } else {
         if (this.debug) {
-          console.error('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.hash + '"] does not exist!')
+          console.error('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.stepHash + '"] does not exist!')
         }
         this.$emit('targetNotFound', this.step)
         if (this.stopOnFail) {
@@ -143,7 +141,7 @@ export default {
     },
     isHighlightEnabled () {
       if (this.debug) {
-        console.log(`[Vue Tour] Highlight is ${this.stepParams.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.hash}"]`)
+        console.log(`[Vue Tour] Highlight is ${this.stepParams.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.stepHash}"]`)
       }
       return this.stepParams.highlight
     },
