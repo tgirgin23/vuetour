@@ -47,7 +47,7 @@
       <div class="section section-hero bg-gray">
         <div id="overview" class="grid-hero container grid-lg text-center">
           <div class="docs-brand">
-            <a href="#" @click="$tours['myTour'].start()" class="docs-logo" id="v-step-0">
+            <a href="#" @click="$tours['myTour'].start()" class="docs-logo">
               <img src="./assets/logo.png" alt="Vue Tour">
               <h2>VUE TOUR</h2>
             </a>
@@ -152,7 +152,6 @@
 
         steps: [
           {
-            target: '#v-step-0',
             content: `Discover <strong>Vue Tour</strong>!`,
             params: {
               highlight: false,
@@ -161,9 +160,7 @@
           },
           {
             target: '#v-step-1',
-            header: {
-              title: 'Vue Tour'
-            },
+            header: 'Vue Tour',
             content: 'An awesome plugin made with Vue.js!',
             params: {
               mask: true
@@ -193,11 +190,12 @@
     },
 
     mounted: function () {
+      // Start the tour as soon as the dom is mounted
       this.$tours['myTour'].start()
 
       // A dynamically added onStop callback
       this.callbacks.onStop = () => {
-        document.querySelector('#v-step-0').scrollIntoView({ behavior: 'smooth' })
+        document.querySelector('#v-step-1').scrollIntoView({ behavior: 'smooth' })
       }
     },
 
