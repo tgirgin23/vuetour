@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VStep.vue renders props.step.content 1`] = `
+<div
+  class="v-step v-step__center"
+>
+  <!---->
+   
+  <div
+    class="v-step__content"
+  >
+    <div>
+      This is a demo step!
+    </div>
+  </div>
+   
+  <div
+    class="v-step__buttons"
+  >
+    <button
+      class="v-step__button v-step__button-skip"
+    >
+      Skip tour
+    </button>
+     
+    <button
+      class="v-step__button v-step__button-previous"
+    >
+      Previous
+    </button>
+     
+    <button
+      class="v-step__button v-step__button-next"
+    >
+      Next
+    </button>
+     
+    <!---->
+  </div>
+   
+  <div
+    class="v-step__arrow"
+  />
+</div>
+`;

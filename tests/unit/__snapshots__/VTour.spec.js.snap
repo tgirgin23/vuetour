@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VTour.vue #before invokes before() on start() 1`] = `
+<div
+  class="v-tour"
+>
+  <!---->
+   
+  <div
+    class="v-step v-step__center"
+    id="v-step-37b59aad"
+  >
+    <!---->
+     
+    <div
+      class="v-step__content"
+    >
+      <div>
+        Discover 
+        <strong>
+          Vue Tour
+        </strong>
+        !
+      </div>
+    </div>
+     
+    <div
+      class="v-step__buttons"
+    >
+      <button
+        class="v-step__button v-step__button-skip"
+      >
+        Skip tour
+      </button>
+       
+      <!---->
+       
+      <button
+        class="v-step__button v-step__button-next"
+      >
+        Next
+      </button>
+       
+      <!---->
+    </div>
+     
+    <div
+      class="v-step__arrow"
+    />
+  </div>
+</div>
+`;
+
+exports[`VTour.vue has the correct number of steps 1`] = `
+<div
+  class="v-tour"
+>
+  <!---->
+   
+  <!---->
+</div>
+`;
+
+exports[`VTour.vue registers itself in the global Vue instance 1`] = `
+<div class="v-tour">
+  <!---->
+  <!---->
+</div>
+`;
+
+exports[`VTour.vue stays within the boundaries of the number of steps 1`] = `
+<div class="v-tour">
+  <!---->
+  <!---->
+</div>
+`;
+
+exports[`VTour.vue stays within the boundaries of the number of steps 2`] = `
+<div class="v-tour">
+  <!---->
+  <div class="v-step v-step__center" id="v-step-4dd0ff2a">
+    <!---->
+    <div class="v-step__content">
+      <div>Discover <strong>Vue Tour</strong>!</div>
+    </div>
+    <div class="v-step__buttons"><button class="v-step__button v-step__button-skip">Skip tour</button>
+      <!----> <button class="v-step__button v-step__button-next">Next</button>
+      <!---->
+    </div>
+    <div class="v-step__arrow"></div>
+  </div>
+</div>
+`;
+
+exports[`VTour.vue stays within the boundaries of the number of steps 3`] = `
+<div class="v-tour">
+  <!---->
+  <div class="v-step v-step__center" id="v-step-9095e0b4">
+    <!---->
+    <div class="v-step__content">
+      <div>An awesome plugin made with Vue.js!</div>
+    </div>
+    <div class="v-step__buttons">
+      <!----> <button class="v-step__button v-step__button-previous">Previous</button>
+      <!----> <button class="v-step__button v-step__button-stop">Finish</button>
+    </div>
+    <div class="v-step__arrow"></div>
+  </div>
+</div>
+`;
+
+exports[`VTour.vue stays within the boundaries of the number of steps 4`] = `
+<div class="v-tour">
+  <!---->
+  <div class="v-step v-step__center" id="v-step-45416562">
+    <!---->
+    <div class="v-step__content">
+      <div>Discover <strong>Vue Tour</strong>!</div>
+    </div>
+    <div class="v-step__buttons"><button class="v-step__button v-step__button-skip">Skip tour</button>
+      <!----> <button class="v-step__button v-step__button-next">Next</button>
+      <!---->
+    </div>
+    <div class="v-step__arrow"></div>
+  </div>
+</div>
+`;
