@@ -1,6 +1,6 @@
 {
   "name": "vuetour",
-  "version": "1.5.0",
+  "version": "1.0.0",
   "description": "Vue Tour is a lightweight, simple and customizable tour plugin for use with Vue.js. It provides a quick and easy way to guide your users through your application.",
   "author": "Timur Girgin",
   "scripts": {
@@ -16,26 +16,32 @@
     "@popperjs/core": "^2.9.0",
     "jump.js": "^1.0.2",
     "nanoid": "^3.1.20",
-    "vue": "^2.6.10"
+    "vue": "^2.6.12"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-plugin-babel": "^4.5.11",
     "@vue/cli-plugin-e2e-cypress": "^4.5.11",
-    "@vue/cli-plugin-eslint": "^4.1.0",
-    "@vue/cli-plugin-unit-jest": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
+    "@vue/cli-plugin-eslint": "^4.5.11",
+    "@vue/cli-plugin-unit-jest": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
     "@vue/eslint-config-standard": "^4.0.0",
-    "@vue/test-utils": "1.1.3",
+    "@vue/test-utils": "^1.1.3",
     "babel-eslint": "^10.0.3",
     "core-js": "^3.4.3",
     "cypress": "^6.6.0",
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
+    "jest-serializer-vue": "^2.0.2",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.12"
   },
   "homepage": "",
+  "jest": {
+    "snapshotSerializers": [
+      "jest-serializer-vue"
+    ]
+  },
   "keywords": [
     "vue",
     "tour"
