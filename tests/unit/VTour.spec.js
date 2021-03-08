@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueTour from '@/main'
 import VTour from '@/components/VTour.vue'
 import { JSDOM } from 'jsdom'
-import nanoid, { customAlphabet } from 'nanoid'
 
 const dom = new JSDOM()
 global.document = dom.window.document
@@ -153,29 +152,6 @@ describe('VTour.vue', () => {
       await wrapper.vm.start()
       expect(wrapper.vm.currentStep).toEqual(0)
       expect(step0).toEqual(true)
-
-      jest.mock('nanoid', () => {
-        return {
-          customAlphabet: jest.fn(() => 1)()
-        }
-      })
-
-      // nanoid.customAlphabet('1234567890abcdef').mockImplementation(() => 1)
-
-      // jest.mock('nanoid', () => ({ customAlphabet: () => jest.fn()() }))
-      // test2 = jest.fn(() => 1)()
-
-      jest.mock(
-        'nanoid',
-        () => {
-          const _customAlphabet = jest.fn().mockReturnValue('1234abcd')
-          return {
-            customAlphabet: jest.fn(() => _customAlphabet)
-          }
-        },
-        { virtual: true }
-      )
-
       expect(wrapper.element).toMatchSnapshot()
 
       step0 = false

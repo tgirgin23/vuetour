@@ -10,10 +10,7 @@
       :targetTop="this.mask.targetTop"
     ></v-mask>
     <v-step
-      :id="'v-step-' + stepHash"
-      :ref="'v-step-' + stepHash"
       v-if="steps[currentStep]"
-      :stepHash="stepHash"
       :stepParams="stepParams"
       :step="steps[currentStep]"
       :key="currentStep"
@@ -40,7 +37,6 @@
 <script>
 import { DEFAULT_CALLBACKS, DEFAULT_OPTIONS, DEFAULT_STEP_OPTIONS, KEYS } from '@/shared/constants'
 import VMask from '@/components/VMask'
-import { customAlphabet } from 'nanoid'
 
 export default {
   name: 'v-tour',
@@ -74,8 +70,7 @@ export default {
         targetTop: 0,
         targetLeft: 0
       },
-      targetElement: null,
-      stepHash: null
+      targetElement: null
     }
   },
   mounted () {
@@ -252,7 +247,6 @@ export default {
   },
   watch: {
     step () {
-      this.stepHash = customAlphabet('1234567890abcdef', 8)()
       this.targetElement = document.querySelector(this.step?.target)
       // If we have a target element we create a mask around it
       if (this.targetElement) {

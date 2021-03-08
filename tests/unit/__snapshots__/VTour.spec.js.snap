@@ -8,7 +8,6 @@ exports[`VTour.vue #before invokes before() on start() 1`] = `
    
   <div
     class="v-step v-step__center"
-    id="v-step-37b59aad"
   >
     <!---->
      
@@ -78,7 +77,7 @@ exports[`VTour.vue stays within the boundaries of the number of steps 1`] = `
 exports[`VTour.vue stays within the boundaries of the number of steps 2`] = `
 <div class="v-tour">
   <!---->
-  <div class="v-step v-step__center" id="v-step-4dd0ff2a">
+  <div class="v-step v-step__center">
     <!---->
     <div class="v-step__content">
       <div>Discover <strong>Vue Tour</strong>!</div>
@@ -95,7 +94,7 @@ exports[`VTour.vue stays within the boundaries of the number of steps 2`] = `
 exports[`VTour.vue stays within the boundaries of the number of steps 3`] = `
 <div class="v-tour">
   <!---->
-  <div class="v-step v-step__center" id="v-step-9095e0b4">
+  <div class="v-step v-step__center">
     <!---->
     <div class="v-step__content">
       <div>An awesome plugin made with Vue.js!</div>
@@ -112,7 +111,7 @@ exports[`VTour.vue stays within the boundaries of the number of steps 3`] = `
 exports[`VTour.vue stays within the boundaries of the number of steps 4`] = `
 <div class="v-tour">
   <!---->
-  <div class="v-step v-step__center" id="v-step-45416562">
+  <div class="v-step v-step__center">
     <!---->
     <div class="v-step__content">
       <div>Discover <strong>Vue Tour</strong>!</div>

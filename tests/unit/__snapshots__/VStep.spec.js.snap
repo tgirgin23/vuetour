@@ -3,6 +3,7 @@
 exports[`VStep.vue renders props.step.content 1`] = `
 <div
   class="v-step v-step__center"
+  stephash="7aa6231c"
 >
   <!---->
    

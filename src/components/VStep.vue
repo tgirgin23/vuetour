@@ -1,5 +1,5 @@
 <template>
-  <div class="v-step" :class="{'v-step__center': stepParams.placement}">
+  <div class="v-step" :class="{'v-step__center': stepParams.placement}" :ref="'v-step-' + hash">
     <slot name="header">
       <div v-if="step.header" class="v-step__header">
         {{ step.header }}
@@ -9,7 +9,7 @@
     <slot name="content">
       <div class="v-step__content">
         <div v-if="step.content" v-html="step.content"></div>
-        <div v-else>This is a demo step! The id of this step is {{ stepHash }} and it targets {{ step.target }}.</div>
+        <div v-else>This is a demo step! The id of this step is {{ hash }} and it targets {{ step.target }}.</div>
       </div>
     </slot>
 
@@ -30,6 +30,7 @@
 import { createPopper } from '@popperjs/core'
 import jump from 'jump.js'
 import { HIGHLIGHT } from '@/shared/constants'
+import { customAlphabet } from 'nanoid'
 
 export default {
   name: 'v-step',
@@ -85,16 +86,17 @@ export default {
     },
     targetElement: {
       type: [HTMLAnchorElement, HTMLDivElement]
-    },
-    stepHash: {
-      type: String,
-      required: true
+    }
+  },
+  data () {
+    return {
+      hash: customAlphabet('1234567890abcdef', 8)()
     }
   },
   methods: {
     createStep () {
       if (this.debug) {
-        console.log('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.stepHash + '"] is:', this.targetElement)
+        console.log('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.hash + '"] is:', this.targetElement)
       }
 
       if (this.targetElement) {
@@ -114,7 +116,7 @@ export default {
         }
       } else {
         if (this.debug) {
-          console.error('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.stepHash + '"] does not exist!')
+          console.error('[Vue Tour] The target element ' + this.step.target + ' of .v-step[id="' + this.hash + '"] does not exist!')
         }
         this.$emit('targetNotFound', this.step)
         if (this.stopOnFail) {
@@ -141,7 +143,7 @@ export default {
     },
     isHighlightEnabled () {
       if (this.debug) {
-        console.log(`[Vue Tour] Highlight is ${this.stepParams.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.stepHash}"]`)
+        console.log(`[Vue Tour] Highlight is ${this.stepParams.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.hash}"]`)
       }
       return this.stepParams.highlight
     },
