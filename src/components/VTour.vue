@@ -255,7 +255,7 @@ export default {
           targetHeight: height,
           targetWidth: width,
           targetLeft: left,
-          targetTop: top
+          targetTop: top + window.pageYOffset // in case the page is scrolled, we need to add the y offset
         })
         this.showMask(this.stepParams.mask)
       } else if (this.step?.params?.mask) {

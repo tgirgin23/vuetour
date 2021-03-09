@@ -170,8 +170,7 @@ export default {
       if (this.isHighlightEnabled()) {
         const target = this.targetElement
         const currentTransition = this.targetElement.style.transition
-        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_HIGHLIGHTED)
-        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_RELATIVE)
+        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_HIGHLIGHTED, HIGHLIGHT.CLASSES.TARGET_RELATIVE)
         // Remove our transition when step is finished.
         if (currentTransition.includes(HIGHLIGHT.TRANSITION)) {
           setTimeout(() => {
