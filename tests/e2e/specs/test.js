@@ -10,11 +10,13 @@ describe('Vue Tour functionalities', () => {
     cy.visit('/')
   })
 
-  it('is displayed on page load', () => {
+  it.only('is displayed on page load', () => {
     const step0 = cy.get('.v-tour')
     step0.get('.v-step__content').contains('Discover Vue Tour!')
     step0.get('.v-step__button-skip').contains('Skip tour')
     step0.get('.v-step__button-next').contains('Next')
+    cy.wait(300)
+    cy.screenshot('appears-on-load', { capture: 'viewport' })
   })
 
   it('loads the second step', () => {
@@ -26,5 +28,6 @@ describe('Vue Tour functionalities', () => {
     content.contains('An awesome plugin made with Vue.js!')
     step0.get('.v-step__button-skip').contains('Skip tour')
     step0.get('.v-step__button-next').contains('Next')
+    cy.screenshot('loaded-second-step', { capture: 'viewport' })
   })
 })
