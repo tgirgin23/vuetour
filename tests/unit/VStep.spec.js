@@ -4,6 +4,16 @@ import VMask from '@/components/VMask.vue'
 import { DEFAULT_OPTIONS, DEFAULT_STEP_OPTIONS } from '@/shared/constants'
 import { customAlphabet } from 'nanoid'
 
+jest.mock(
+  'nanoid',
+  () => {
+    const _customAlphabet = jest.fn().mockReturnValue('1234abcd')
+    return {
+      customAlphabet: jest.fn(() => _customAlphabet)
+    }
+  }
+)
+
 describe('VStep.vue', () => {
   it('renders props.step.content', () => {
     const step = {
@@ -44,7 +54,7 @@ describe('VStep.vue', () => {
       }
     })
 
-    // expect(wrapper.element).toMatchSnapshot()
+    expect(wrapper.element).toMatchSnapshot()
     expect(wrapper.findComponent(VMask))
 
     expect(wrapper.text()).toContain(step.content)
