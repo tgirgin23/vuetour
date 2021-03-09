@@ -2,11 +2,6 @@ import { mount } from '@vue/test-utils'
 import Vue from 'vue'
 import VueTour from '@/main'
 import VTour from '@/components/VTour.vue'
-import { JSDOM } from 'jsdom'
-
-const dom = new JSDOM()
-global.document = dom.window.document
-global.window = dom.window
 
 Vue.use(VueTour)
 
