@@ -16,6 +16,22 @@ const steps = [
   }
 ]
 
+beforeAll(() => {
+  // Mock the scrollIntoView function
+  Element.prototype.scrollIntoView = jest.fn()
+
+  // Add div elements mocking the steps
+  const docFrag = document.createDocumentFragment()
+
+  steps.forEach(step => {
+    const div = document.createElement('div')
+    div.setAttribute('id', step.target)
+    docFrag.appendChild(div)
+  })
+
+  document.body.appendChild(docFrag)
+})
+
 describe('VTour.vue', () => {
   it('has the correct number of steps', () => {
     const wrapper = mount(VTour, {
@@ -26,6 +42,8 @@ describe('VTour.vue', () => {
     })
 
     expect(wrapper.vm.steps.length).toEqual(2)
+
+    expect(wrapper.element).toMatchSnapshot()
   })
 
   it('registers itself in the global Vue instance', () => {
@@ -38,6 +56,8 @@ describe('VTour.vue', () => {
 
     expect(typeof wrapper.vm.$tours).toBe('object')
     expect(wrapper.vm.$tours).toHaveProperty('myTestTour')
+
+    expect(wrapper).toMatchSnapshot()
   })
 
   it('stays within the boundaries of the number of steps', async () => {
@@ -50,8 +70,12 @@ describe('VTour.vue', () => {
 
     expect(wrapper.vm.currentStep).toEqual(-1)
 
+    expect(wrapper).toMatchSnapshot()
+
     await wrapper.vm.start()
     expect(wrapper.vm.currentStep).toEqual(0)
+
+    expect(wrapper).toMatchSnapshot()
 
     // We call nextStep one more time than needed
     for (let i = 0; i < steps.length; i++) {
@@ -59,6 +83,8 @@ describe('VTour.vue', () => {
     }
 
     expect(wrapper.vm.currentStep).toEqual(1)
+
+    expect(wrapper).toMatchSnapshot()
 
     // We call previousStep one more time than needed
     for (let i = 0; i < steps.length; i++) {
@@ -70,6 +96,8 @@ describe('VTour.vue', () => {
     wrapper.vm.stop()
 
     expect(wrapper.vm.currentStep).toEqual(-1)
+
+    expect(wrapper).toMatchSnapshot()
   })
 
   describe('#before', () => {
@@ -119,6 +147,7 @@ describe('VTour.vue', () => {
       await wrapper.vm.start()
       expect(wrapper.vm.currentStep).toEqual(0)
       expect(step0).toEqual(true)
+      expect(wrapper.element).toMatchSnapshot()
 
       step0 = false
       step1 = false

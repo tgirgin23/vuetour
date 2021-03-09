@@ -21,6 +21,7 @@
             <v-step
                     v-if="tour.currentStep === index"
                     v-for="(step, index) of tour.steps"
+                    :step-params="tour.steps"
                     :key="index"
                     :step="step"
                     :previous-step="tour.previousStep"
@@ -47,7 +48,7 @@
       <div class="section section-hero bg-gray">
         <div id="overview" class="grid-hero container grid-lg text-center">
           <div class="docs-brand">
-            <a href="#" @click="$tours['myTour'].start()" class="docs-logo" id="v-step-0">
+            <a href="#" @click="$tours['myTour'].start()" class="docs-logo">
               <img src="./assets/logo.png" alt="Vue Tour">
               <h2>VUE TOUR</h2>
             </a>
@@ -152,24 +153,25 @@
 
         steps: [
           {
-            target: '#v-step-0',
             content: `Discover <strong>Vue Tour</strong>!`,
             params: {
-              highlight: false
+              mask: true,
             }
           },
           {
             target: '#v-step-1',
-            header: {
-              title: 'Vue Tour'
-            },
-            content: 'An awesome plugin made with Vue.js!'
+            header: 'Vue Tour',
+            content: 'An awesome plugin made with Vue.js!',
+            params: {
+              mask: true
+            }
           },
           {
             target: '#v-step-2',
             content: 'Try it, you\'ll love it!<br>You can put HTML in the steps and completely customize the DOM to suit your needs.',
             params: {
-              placement: 'top'
+              placement: 'top',
+              highlight: true
             }
           },
           {
@@ -189,11 +191,12 @@
     },
 
     mounted: function () {
+      // Start the tour as soon as the dom is mounted
       this.$tours['myTour'].start()
 
       // A dynamically added onStop callback
       this.callbacks.onStop = () => {
-        document.querySelector('#v-step-0').scrollIntoView({ behavior: 'smooth' })
+        document.querySelector('#v-step-1').scrollIntoView({ behavior: 'smooth' })
       }
     },
 

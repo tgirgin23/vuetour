@@ -55,7 +55,8 @@ export const DEFAULT_STEP_OPTIONS = {
       }
     }
   ],
-  placement: 'bottom'
+  placement: 'bottom',
+  mask: false
 }
 
 export const KEYS = {

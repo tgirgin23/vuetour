@@ -1,8 +1,8 @@
 <template>
-  <div class="v-step" :class="{'v-step__center': params.placement}" :id="'v-step-' + hash" :ref="'v-step-' + hash">
+  <div class="v-step" :class="{'v-step__center': stepParams.placement}" :ref="'v-step-' + hash">
     <slot name="header">
       <div v-if="step.header" class="v-step__header">
-        <div v-if="step.header.title" v-html="step.header.title"></div>
+        {{ step.header }}
       </div>
     </slot>
 
@@ -22,21 +22,25 @@
       </div>
     </slot>
 
-    <div class="v-step__arrow" :class="{ 'v-step__arrow--dark': step.header && step.header.title }"></div>
+    <div class="v-step__arrow" :class="{ 'v-step__arrow--dark': step.header }"></div>
   </div>
 </template>
 
 <script>
 import { createPopper } from '@popperjs/core'
 import jump from 'jump.js'
+import { HIGHLIGHT } from '@/shared/constants'
 import { customAlphabet } from 'nanoid'
-import { DEFAULT_STEP_OPTIONS, HIGHLIGHT } from '@/shared/constants'
 
 export default {
   name: 'v-step',
   props: {
     step: {
       type: Object
+    },
+    stepParams: {
+      type: Object,
+      required: true
     },
     previousStep: {
       type: Function
@@ -79,22 +83,14 @@ export default {
     },
     debug: {
       type: Boolean
+    },
+    targetElement: {
+      type: [HTMLAnchorElement, HTMLDivElement]
     }
   },
   data () {
     return {
-      hash: customAlphabet('1234567890abcdef', 8)(),
-      targetElement: document.querySelector(this.step.target)
-    }
-  },
-  computed: {
-    params () {
-      return {
-        ...DEFAULT_STEP_OPTIONS,
-        ...{ highlight: this.highlight }, // Use global tour highlight setting first
-        ...{ enabledButtons: Object.assign({}, this.enabledButtons) },
-        ...this.step.params // Then use local step parameters if defined
-      }
+      hash: customAlphabet('1234567890abcdef', 8)()
     }
   },
   methods: {
@@ -107,12 +103,16 @@ export default {
         this.enableScrolling()
         this.createHighlight()
         // use popper only if we need to place the element anywhere but centered
-        if (this.params.placement !== 'center') {
+        if (this.stepParams.placement !== 'center') {
           createPopper(
             this.targetElement,
             this.$refs['v-step-' + this.hash],
-            this.params
+            this.stepParams
           )
+        }
+
+        if (this.stepParams.mask) {
+          this.$emit('show-mask', true)
         }
       } else {
         if (this.debug) {
@@ -125,7 +125,7 @@ export default {
       }
     },
     enableScrolling () {
-      if (this.params.enableScrolling) {
+      if (this.stepParams.enableScrolling) {
         if (this.step.duration || this.step.offset) {
           let jumpOptions = {
             duration: this.step.duration || 1000,
@@ -143,9 +143,9 @@ export default {
     },
     isHighlightEnabled () {
       if (this.debug) {
-        console.log(`[Vue Tour] Highlight is ${this.params.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.hash}"]`)
+        console.log(`[Vue Tour] Highlight is ${this.stepParams.highlight ? 'enabled' : 'disabled'} for .v-step[id="${this.hash}"]`)
       }
-      return this.params.highlight
+      return this.stepParams.highlight
     },
     createHighlight () {
       if (this.isHighlightEnabled()) {
@@ -170,8 +170,7 @@ export default {
       if (this.isHighlightEnabled()) {
         const target = this.targetElement
         const currentTransition = this.targetElement.style.transition
-        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_HIGHLIGHTED)
-        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_RELATIVE)
+        this.targetElement.classList.remove(HIGHLIGHT.CLASSES.TARGET_HIGHLIGHTED, HIGHLIGHT.CLASSES.TARGET_RELATIVE)
         // Remove our transition when step is finished.
         if (currentTransition.includes(HIGHLIGHT.TRANSITION)) {
           setTimeout(() => {
@@ -181,7 +180,7 @@ export default {
       }
     },
     isButtonEnabled (name) {
-      return this.params.enabledButtons.hasOwnProperty(name) ? this.params.enabledButtons[name] : true
+      return this.stepParams.enabledButtons.hasOwnProperty(name) ? this.stepParams.enabledButtons[name] : true
     }
   },
   mounted () {
@@ -230,7 +229,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="top"] {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="top"] .v-step__arrow {
@@ -245,7 +244,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="bottom"] {
-    margin-top: 0.5rem;
+    margin-top: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="bottom"] .v-step__arrow {
@@ -260,7 +259,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="right"] {
-    margin-left: 0.5rem;
+    margin-left: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="right"] .v-step__arrow {
@@ -275,7 +274,7 @@ export default {
   }
 
   .v-step[data-popper-placement^="left"] {
-    margin-right: 0.5rem;
+    margin-right: 0.5rem !important;
   }
 
   .v-step[data-popper-placement^="left"] .v-step__arrow {
