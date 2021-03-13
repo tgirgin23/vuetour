@@ -1,8 +1,8 @@
-# Vue Tour
+[![Vuetour Actions Status](https://github.com/tgirgin23/vuetour/actions/workflows/node.js.yml/badge.svg)](https://github.com/tgirgin23/vuetour/actions)
 
-[![CircleCI](https://circleci.com/gh/pulsardev/vue-tour/tree/master.svg?style=svg)](https://circleci.com/gh/pulsardev/vue-tour/tree/master)
+# VueTour
 
-> Vue Tour is a lightweight, simple and customizable tour plugin for use with Vue.js.
+> VueTour is a lightweight, simple and customizable tour plugin for use with Vue.js.
 > It provides a quick and easy way to guide your users through your application.
 
 [![Vue Tour](./screenshot.gif "Vue Tour")](https://pulsardev.github.io/vue-tour/)

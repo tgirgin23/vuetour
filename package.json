@@ -6,6 +6,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib src/main.js",
+    "docs:build": "vuepress build docs",
+    "docs:serve": "vuepress dev docs",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
@@ -35,7 +37,8 @@
     "jest-serializer-vue": "^2.0.2",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.12",
+    "vuepress": "^1.8.2"
   },
   "homepage": "",
   "jest": {
